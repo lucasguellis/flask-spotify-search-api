@@ -3,10 +3,10 @@ from flask import Blueprint, request, jsonify
 from ..services.search import Search
 
 
-search_bp = Blueprint('search', __name__)
+api_search_bp = Blueprint('api_search', __name__)
 
 
-@search_bp.route('/search')
+@api_search_bp.route('/search')
 def search():
     # Get the search parameters from the query string
     parameters = request.args.to_dict()

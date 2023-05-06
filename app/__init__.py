@@ -31,16 +31,18 @@ def create_app():
     # Minify para reduzir tamanho de arquivos
     Minify(app=app, html=True, js=True, cssless=True)
 
-    from .api.v1.routes import (
-        search,
-    )
-
     # app.register_blueprint(routes_base)
     # app.register_error_handler(404, error_404)
     # app.register_error_handler(401, error_401)
 
+    from .api.v1.routes.search import api_search_bp
+
     api_url = "/api/v1"
 
-    app.register_blueprint(search.search_bp, url_prefix=api_url)
+    app.register_blueprint(api_search_bp, url_prefix=api_url)
+
+    from .routes.search import search_bp
+
+    app.register_blueprint(search_bp)
 
     return app
