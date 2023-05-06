@@ -16,3 +16,4 @@ else:
 # Spotify API Credencials
 CLIENT_ID: str = str(os.environ["CLIENT_ID"])
 CLIENT_SECRET: str = str(os.environ["CLIENT_SECRET"])
+TOKEN: str = str(os.environ["TOKEN"])

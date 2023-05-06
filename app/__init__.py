@@ -32,7 +32,7 @@ def create_app():
     Minify(app=app, html=True, js=True, cssless=True)
 
     from .api.v1.routes import (
-        api_area_routes,
+        search,
     )
 
     # app.register_blueprint(routes_base)
@@ -41,6 +41,6 @@ def create_app():
 
     api_url = "/api/v1"
 
-    app.register_blueprint(api_area_routes, url_prefix=api_url)
+    app.register_blueprint(search.search_bp, url_prefix=api_url)
 
     return app
