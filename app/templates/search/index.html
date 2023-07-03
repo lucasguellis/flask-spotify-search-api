@@ -1,41 +1,56 @@
 {% extends 'base.html' %}
-{% block content %}
-<style>
-body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
-    padding: 0;
-  }
-  
-  input[type="text"] {
-    width: 300px;
-    padding: 10px;
-    font-size: 18px;
-    border: none;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  }
-  
-  button[type="submit"] {
-    padding: 10px 20px;
-    font-size: 18px;
-    color: #fff;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  }
-</style>
 
-<form method="GET" action="/api/v1/search">
-    <input type="text" name="q" placeholder="Search...">
-    <input type="hidden" value="album" name="type">
-    <br><br>
-    <button type="submit">Submit</button>
-</form>
-{% endblock content %}
+{% block content %}
+  <div class="row">
+    <div class="col-md-6">
+      <div class="d-flex flex-column justify-content-center align-items-center h-100">
+        <form method="GET" action="/api/v1/search" class="mb-3">
+          <div class="form-group mb-2">
+            <input type="text" name="q" class="form-control" id="search-input" placeholder="Enter search term...">
+            <input type="hidden" name="type" value="album" id="search-type">
+          </div>
+          <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card d-none" style="width: 18rem;" id="album-card">
+        <img src="" class="card-img-top" alt="album image" id="album-image">
+        <div class="card-body">
+          <h5 class="card-title" id="artist-name"></h5>
+          <p class="card-text" id="album-name"></p>
+          <p class="card-text" id="album-release"></p>
+          <p class="card-text" id="album-total-tracks"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.querySelector('form');
+    const searchInput = document.querySelector('#search-input');
+    const searchType = document.querySelector('#search-type');
+
+    const albumCard = document.querySelector('#album-card');
+      albumCard.classList.add('d-none');
+    const albumImage = document.querySelector('#album-image');
+    const artistName = document.querySelector('#artist-name');
+    const albumName = document.querySelector('#album-name');
+    const albumRelease = document.querySelector('#album-release');
+    const albumTotalTracks = document.querySelector('#album-total-tracks');
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const response = await fetch(`/api/v1/search?q=${searchInput.value}&type=${searchType.value}`);
+      const data = await response.json();
+
+      albumImage.src = data.images[1].url
+      artistName.innerHTML = data.artists[0].name
+      albumName.innerHTML = data.name
+      albumRelease.innerHTML = data.release_date
+      albumTotalTracks.innerHTML = data.total_tracks + " músicas"
+
+      albumCard.classList.remove('d-none');
+    });
+  </script>
+{% endblock %}

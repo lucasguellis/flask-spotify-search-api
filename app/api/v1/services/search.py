@@ -1,7 +1,7 @@
 import requests
 
 
-from ..utils.treatments import dict_to_url_params
+from ..utils.treatments import dict_to_url_params, filter_result
 from ..utils.validations import is_token_expired
 from .token import Token
 
@@ -24,4 +24,5 @@ class Search:
             self.token = new_token
 
         result = requests.get(self.BASE_URL, headers=self.headers)
-        return result.json()
+        filtered_result = filter_result(['album_group', 'album_type', 'artists', 'href', 'id', 'images', 'name', 'release_date', 'release_date_precision', 'total_tracks', 'type', 'uri'], result.json()['albums']['items'][0])
+        return filtered_result

@@ -1,4 +1,4 @@
-def dict_to_url_params(d):
+def dict_to_url_params(d: dict) -> str:
     """
     Converts a dictionary to a string in the format of URL parameters.
     """
@@ -13,3 +13,7 @@ def dict_to_url_params(d):
         params.append(f"{key}={value}")
     # Join the key-value pairs with ampersands and add a question mark at the beginning
     return "?" + "&".join(params)
+
+
+def filter_result(keys: list, result: dict) -> dict:
+    return {key: result[key] for key in keys if key in result}
